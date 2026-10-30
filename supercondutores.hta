@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supercondutores à Temperatura Ambiente</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --neon-green: #39ff14;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            color: #fff;
+        }
+
+        h1 {
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .highlight {
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Simulador de Levitação Magnética */
+        .simulator-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            background: radial-gradient(circle at center, #1f242c, #161b22);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .track {
+            width: 160px;
+            height: 20px;
+            background: linear-gradient(90deg, #555, #888, #555);
+            border-radius: 4px;
+            margin-top: 60px;
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+        }
+
+        .magnet {
+            width: 50px;
+            height: 25px;
+            background: linear-gradient(135deg, #ff3366, #ff0033);
+            border-radius: 4px;
+            position: relative;
+            transform: translateY(0px);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.8s ease;
+            box-shadow: 0 5px 5px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .magnet.floating {
+            transform: translateY(-40px);
+            animation: float-pulse 3s ease-in-out infinite alternate;
+            box-shadow: 0 0 20px var(--neon-green), 0 35px 15px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, var(--neon-green), #00ffcc);
+            color: #000;
+        }
+
+        @keyframes float-pulse {
+            0% { transform: translateY(-38px); }
+            100% { transform: translateY(-44px); }
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #388bfd;
+        }
+
+        /* Conversor de Temperatura */
+        .converter-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .input-block {
+            flex: 1;
+        }
+
+        .input-block label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .input-block input {
+            width: 100%;
+            padding: 10px;
+            background-color: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #1f242c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Supercondutores à Temperatura Ambiente</h1>
+        <p><strong>O Santo Graal da física moderna:</strong> Materiais que conduzem eletricidade com <span class="highlight">zero resistência</span> rodando interativamente no seu browser.</p>
+    </header>
+
+    <main>
+        <!-- SIMULADOR INTERATIVO -->
+        <section class="card">
+            <h2>Demonstração Virtual: Efeito Meissner</h2>
+            <p>Arrefeça o material magnético virtual para ativar o estado de supercondutividade e induzir a levitação.</p>
+            <div class="simulator-container">
+                <button class="btn" id="coolBtn">Arrefecer Material (Injetar LN₂)</button>
+                <div class="magnet" id="block">Ímã</div>
+                <div class="track"></div>
+            </div>
+        </section>
+
+        <!-- CALCULADORA INTERATIVA -->
+        <section class="card">
+            <h2>Conversor Interativo de Temperatura Crítica (Tc)</h2>
+            <p>Insira uma temperatura em qualquer escala para converter para as restantes de forma instantânea.</p>
+            <div class="converter-group">
+                <div class="input-block">
+                    <label for="celsius">Celsius (°C)</label>
+                    <input type="number" id="celsius" value="20" step="0.1">
+                </div>
+                <div class="input-block">
+                    <label for="kelvin">Kelvin (K)</label>
+                    <input type="number" id="kelvin" value="293.15" step="0.1">
+                </div>
+                <div class="input-block">
+                    <label for="fahrenheit">Fahrenheit (°F)</label>
+                    <input type="number" id="fahrenheit" value="68" step="0.1">
+                </div>
+            </div>
+        </section>
+
+        <!-- DADOS COMPARATIVOS -->
+        <section class="card">
+            <h2>Evolução da Temperatura de Transição</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Temperatura Crítica (Tc)</th>
+                        <th>Estado de Refrigeração Requerido</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Mercúrio (1911)</strong></td>
+                        <td>4.2 K (-268.95 °C)</td>
+                        <td>Hélio Líquido (Ultra complexo)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>YBCO (1987)</strong></td>
+                        <td>93 K (-180.15 °C)</td>
+                        <td>Azoto Líquido (Acessível)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Meta Idealizada</strong></td>
+                        <td>293 K (+20 °C)</td>
+                        <td><span class="highlight">Nenhum (Temperatura Ambiente)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
+
+<script>
+    // Lógica do Simulador de Levitação
+    const coolBtn = document.getElementById('coolBtn');
+    const block = document.getElementById('block');
+    let isFloating = false;
+
+    coolBtn.addEventListener('click', () => {
+        isFloating = !isFloating;
+        if(isFloating) {
+            block.classList.add('floating');
+            block.textContent = "Flutuando";
+            coolBtn.textContent = "Aquecer Material (Perder Efeito)";
+            coolBtn.style.backgroundColor = "#ff3366";
+        } else {
+            block.classList.remove('floating');
+            block.textContent = "Ímã";
+            coolBtn.textContent = "Arrefecer Material (Injetar LN₂)";
+            coolBtn.style.backgroundColor = "var(--accent-color)";
+        }
+    });
+
+    // Lógica do Conversor de Temperatura Reativo
+    const cel = document.getElementById('celsius');
+    const kel = document.getElementById('kelvin');
+    const fah = document.getElementById('fahrenheit');
+
+    cel.addEventListener('input', () => {
+        let c = parseFloat(cel.value);
+        if(!isNaN(c)) {
+            kel.value = (c + 273.15).toFixed(2);
+            fah.value = ((c * 9/5) + 32).toFixed(2);
+        }
+    });
+
+    kel.addEventListener('input', () => {
+        let k = parseFloat(kel.value);
+        if(!isNaN(k)) {
+            cel.value = (k - 273.15).toFixed(2);
+            fah.value = (((k - 273.15) * 9/5) + 32).toFixed(2);
+        }
+    });
+
+    fah.addEventListener('input', () => {
+        let f = parseFloat(fah.value);
+        if(!isNaN(f)) {
+            cel.value = ((f - 32) * 5/9).toFixed(2);
+            kel.value = (((f - 32) * 5/9) + 273.15).toFixed(2);
+        }
+    });
+</script>
+
+</body>
+</html>
